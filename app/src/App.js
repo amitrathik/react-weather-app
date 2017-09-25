@@ -13,13 +13,13 @@ class App extends Component {
     };
   }
 
-  locationSearch(term){
+  handleLocationSearch(term){
     return fetch(`http://localhost:3000/search/?term=${term}`)
       .then((res) => res.json())
       .then((res) => this.setState({locations : res['RESULTS']}))
   }
 
-  getLocationConditions(location){
+  handleLocationSelect(location){
     return fetch(`http://localhost:3000/conditions/?lat=${location.lat}&lon=${location.lon}`)
       .then((res) => res.json())
       .then((res) => this.setState({conditions : res['current_observation']}))
@@ -29,13 +29,13 @@ class App extends Component {
     return (
       <div className="container">
         <SearchForm
-          onSearchTermChange={term=> this.locationSearch(term)}
+          onSearchTermChange={term=> this.handleLocationSearch(term)}
         />
         <SearchResultsList
           locations={this.state.locations}
           onLocationSelect={(selectedLocation) => this.setState({
             selectedLocation : selectedLocation,
-            conditions : this.getLocationConditions(selectedLocation)
+            conditions : this.handleLocationSelect(selectedLocation)
           })}
         />
         <LocationDetails
