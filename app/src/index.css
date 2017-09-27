@@ -56,3 +56,6 @@ ul{
   margin: 0 auto;
   text-align: center;
 }
+.location-detail p{
+  margin-bottom: 10px;
+}

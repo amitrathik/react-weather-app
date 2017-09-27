@@ -10,6 +10,7 @@ const LocationDetail = ({location, conditions}) =>{
       <img src={conditions.icon_url} alt={conditions.icon}/>
       <p>{conditions.weather}</p>
       <p>{conditions.temperature_string}</p>
+      <i>{conditions.observation_time}</i>
     </div>
   )
 }
