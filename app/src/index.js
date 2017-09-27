@@ -4,6 +4,7 @@ import './index.css';
 import SearchForm from './components/SearchForm';
 import SearchResultsList from './components/SearchResultsList';
 import LocationDetails from './components/LocationDetails';
+import {loadLocations,loadConditions} from './lib/utils';
 
 class App extends Component {
   constructor(props){
@@ -11,34 +12,42 @@ class App extends Component {
     this.state = {
       locations: [],
       selectedLocation: null,
-      conditions: null
+      conditions: null,
+      showSuggestions : false
     };
   }
 
+  // Use query string to get location suggestions
   handleLocationSearch(term){
-    return fetch(`http://localhost:3000/search/?term=${term}`)
-      .then((res) => res.json())
-      .then((res) => this.setState({locations : res['RESULTS']}))
+    // toggle suggestion drop down
+    this.setState({showSuggestions : true})
+    // fetch locations
+    return loadLocations(term)
+      .then(locations => this.setState({locations}))
   }
 
+  // Use lat & lon from selected locations and get conditions
   handleLocationSelect(location){
-    return fetch(`http://localhost:3000/conditions/?lat=${location.lat}&lon=${location.lon}`)
-      .then((res) => res.json())
-      .then((res) => this.setState({conditions : res['current_observation']}))
+    // toggle suggestion drop down
+    this.setState({showSuggestions : false})
+    // fetch conditions
+    return loadConditions(location)
+      .then(conditions => this.setState({conditions}))
   }
 
   render() {
     return (
       <div className="container">
         <SearchForm
-          onSearchTermChange={term=> this.handleLocationSearch(term)}
+          onSearchTermChange={term => this.handleLocationSearch(term)}
         />
         <SearchResultsList
           locations={this.state.locations}
-          onLocationSelect={(selectedLocation) => this.setState({
+          onLocationSelect={ (selectedLocation) => this.setState({
             selectedLocation : selectedLocation,
             conditions : this.handleLocationSelect(selectedLocation)
           })}
+          showSuggestions={this.state.showSuggestions}
         />
         <LocationDetails
           location={this.state.selectedLocation}

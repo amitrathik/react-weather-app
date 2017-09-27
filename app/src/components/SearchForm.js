@@ -8,7 +8,7 @@ class SearchForm extends Component {
 
   render() {
    return (
-     <form className="search-form">
+     <form className="search-form" onSubmit={evt => evt.preventDefault()}>
         <input
           className="search-form-input"
           type="text"

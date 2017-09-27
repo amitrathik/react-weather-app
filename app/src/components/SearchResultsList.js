@@ -11,8 +11,9 @@ const SearchResultsList = (props) => {
       />
     )
   })
+  const showSuggestions = (props.showSuggestions ? '' : 'hide')
   return (
-    <ul className="search-results-list">
+    <ul className={"search-results-list " + showSuggestions}>
       {SearchResultsListItems}
     </ul>
   )
